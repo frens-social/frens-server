@@ -1,0 +1,15 @@
+database:
+  host: localhost
+  port: 5432
+  user: "frens"
+  password: "frens"
+  database: "frens"
+
+router:
+  port: 4000
+  prefork: false
+  body_limit: 4194304
+  read_buffer_size: 4096
+  write_buffer_size: 4096
+  read_timeout: 60
+  write_timeout: 60
