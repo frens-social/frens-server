@@ -52,6 +52,7 @@ func addAuthenticatedRoutes() {
 
 	// Statuses
 	v1.Post("/statuses", handlers.CreateStatus)
+	v1.Get("/statuses", handlers.GetStatuses)
 	v1.Delete("/statuses/:id", handlers.DeleteStatus)
 	v1.Get("/statuses/:id", handlers.GetStatus)
 

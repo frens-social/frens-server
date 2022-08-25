@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"strconv"
+
 	"github.com/bwoff11/frens/internal/database"
 	"github.com/bwoff11/frens/internal/models"
 	"github.com/gofiber/fiber/v2"
@@ -30,6 +32,26 @@ func CreateStatus(c *fiber.Ctx) error {
 
 	// Return status
 	return c.Status(fiber.StatusOK).JSON(status)
+}
+
+func GetStatuses(c *fiber.Ctx) error {
+
+	// Read query parameters
+	count := c.Query("count", "10")
+	countInt, err := strconv.Atoi(count)
+	if err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+	// TODO: Add more query parameters
+
+	// Get statuses from database
+	statuses, err := database.GetStatuses(countInt)
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	// Return statuses
+	return c.Status(fiber.StatusOK).JSON(statuses)
 }
 
 func DeleteStatus(c *fiber.Ctx) error {

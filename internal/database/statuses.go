@@ -15,3 +15,11 @@ func DeleteStatus(id string) bool {
 	}
 	return true
 }
+
+func GetStatuses(count int) ([]models.Status, error) {
+	var statuses []models.Status
+	if err := database.Limit(count).Find(&statuses).Error; err != nil {
+		return nil, err
+	}
+	return statuses, nil
+}
