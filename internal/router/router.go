@@ -5,6 +5,7 @@ import (
 
 	"github.com/bwoff11/frens/internal/handlers"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	jwtware "github.com/gofiber/jwt/v3"
 )
 
@@ -13,7 +14,7 @@ var app *fiber.App
 func Create() {
 	app = fiber.New()
 
-	// TODO: Add middleware
+	addMiddleware()
 	// TODO: Get config from config package
 
 	addUnauthenticatedRoutes()
@@ -23,6 +24,10 @@ func Create() {
 	}))
 
 	addAuthenticatedRoutes()
+}
+
+func addMiddleware() {
+	app.Use(cors.New())
 }
 
 func addUnauthenticatedRoutes() {
