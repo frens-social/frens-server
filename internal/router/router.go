@@ -6,6 +6,7 @@ import (
 	"github.com/bwoff11/frens/internal/handlers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	jwtware "github.com/gofiber/jwt/v3"
 )
 
@@ -28,6 +29,7 @@ func Create() {
 
 func addMiddleware() {
 	app.Use(cors.New())
+	app.Use(logger.New())
 }
 
 func addUnauthenticatedRoutes() {
@@ -45,6 +47,7 @@ func addAuthenticatedRoutes() {
 	// Accounts
 	v1.Get("/accounts", handlers.GetAllAccounts)
 	v1.Post("/accounts", handlers.CreateAccount)
+	v1.Get("/accounts/self", handlers.GetSelfAccount)
 	v1.Get("/accounts/:id", handlers.GetAccount)
 
 	// Statuses

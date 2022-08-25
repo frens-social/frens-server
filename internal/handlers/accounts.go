@@ -58,3 +58,11 @@ func GetAccount(c *fiber.Ctx) error {
 	// Return account
 	return c.JSON(account)
 }
+
+func GetSelfAccount(c *fiber.Ctx) error {
+
+	// Get account ID from JWT
+	return c.JSON(map[string]string{
+		"username": "cool_user",
+	})
+}
