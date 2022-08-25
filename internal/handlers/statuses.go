@@ -25,6 +25,11 @@ func CreateStatus(c *fiber.Ctx) error {
 		Text: body.Text,
 	}
 
+	// Validate status
+	if err := status.Validate(); err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
 	// Insert status into database
 	if ok := database.CreateStatus(&status); !ok {
 		return c.SendStatus(fiber.StatusInternalServerError)
