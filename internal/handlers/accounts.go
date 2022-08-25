@@ -63,6 +63,7 @@ func GetSelfAccount(c *fiber.Ctx) error {
 
 	// Get account ID from JWT
 	return c.JSON(map[string]string{
-		"username": "cool_user",
+		"username":   "cool_user",
+		"avatar_url": "https://cdn-icons-png.flaticon.com/512/147/147144.png",
 	})
 }

@@ -32,6 +32,7 @@ func Connect() {
 
 	if err := database.AutoMigrate(
 		&models.Account{},
+		&models.Status{},
 	); err != nil {
 		log.Fatalln(err)
 	}
