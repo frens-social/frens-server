@@ -25,8 +25,20 @@ func CreateStatus(c *fiber.Ctx) error {
 
 	// Parse account id from claims
 	user := c.Locals("user").(*jwt.Token)
+	if user == nil {
+		log.Println("Error parsing user from claims")
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
 	claims := user.Claims.(jwt.MapClaims)
+	if claims["id"] == nil {
+		log.Println("Error parsing user id from claims")
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
 	accountID := claims["id"].(float64)
+	if accountID == 0 {
+		log.Println("Error parsing user id from claims")
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
 	accountIDUint64 := uint64(accountID)
 
 	// Convert to status
@@ -35,14 +47,15 @@ func CreateStatus(c *fiber.Ctx) error {
 		AccountID: accountIDUint64,
 	}
 
+	// Validate status
+	if err := status.Validate(); err != nil {
+		log.Println("Error validating status:", err)
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
 	// Insert status into database
 	if ok := database.CreateStatus(&status); !ok {
 		return c.SendStatus(fiber.StatusInternalServerError)
-	}
-
-	// Validate status
-	if err := status.Validate(); err != nil {
-		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
 	// Return status
