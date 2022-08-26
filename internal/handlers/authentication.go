@@ -22,15 +22,15 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	// Authenticate user
-	if ok := database.Authenticate(body.Username, body.Password); !ok {
+	account := database.Authenticate(body.Username, body.Password)
+	if account == nil {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
 
 	// Create the claims
 	claims := jwt.MapClaims{
-		"name":  "John Doe",
-		"admin": true,
-		"exp":   time.Now().Add(time.Hour * 72).Unix(),
+		"id":  account.ID,
+		"exp": time.Now().Add(time.Hour * 999).Unix(),
 	}
 
 	// Create token

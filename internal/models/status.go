@@ -3,8 +3,10 @@ package models
 import "github.com/go-playground/validator"
 
 type Status struct {
-	ID   uint   `json:"-" gorm:"primary_key"`
-	Text string `json:"text" validate:"required"`
+	ID        uint64  `json:"-" gorm:"primary_key"`
+	AccountID uint64  `json:"account_id" gorm:"column:account_id"`
+	Account   Account `json:"account" gorm:"foreignkey:AccountID"`
+	Text      string  `json:"text" validate:"required"`
 }
 
 func (s *Status) Validate() error {

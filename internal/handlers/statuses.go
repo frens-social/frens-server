@@ -1,11 +1,13 @@
 package handlers
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/bwoff11/frens/internal/database"
 	"github.com/bwoff11/frens/internal/models"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type CreateStatusBody struct {
@@ -17,12 +19,20 @@ func CreateStatus(c *fiber.Ctx) error {
 	// Parse request body
 	var body CreateStatusBody
 	if err := c.BodyParser(&body); err != nil {
+		log.Println("Error parsing request body:", err)
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
+	// Parse account id from claims
+	user := c.Locals("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	accountID := claims["id"].(float64)
+	accountIDUint64 := uint64(accountID)
+
 	// Convert to status
 	status := models.Status{
-		Text: body.Text,
+		Text:      body.Text,
+		AccountID: accountIDUint64,
 	}
 
 	// Validate status
@@ -30,13 +40,8 @@ func CreateStatus(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	// Insert status into database
-	if ok := database.CreateStatus(&status); !ok {
-		return c.SendStatus(fiber.StatusInternalServerError)
-	}
-
 	// Return status
-	return c.Status(fiber.StatusOK).JSON(status)
+	return c.SendStatus(fiber.StatusOK)
 }
 
 func GetStatuses(c *fiber.Ctx) error {
