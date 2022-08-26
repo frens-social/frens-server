@@ -11,12 +11,13 @@ func CreateAccount(account *models.Account) bool {
 	return true
 }
 
-func GetAccount(id string, account *models.Account) bool {
+func GetAccount(id uint64) *models.Account {
+	var account models.Account
 	if err := database.
 		Where("id = ?", id).
-		First(account).
+		First(&account).
 		Error; err != nil {
-		return false
+		return nil
 	}
-	return true
+	return &account
 }

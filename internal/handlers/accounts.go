@@ -1,9 +1,13 @@
 package handlers
 
 import (
+	"log"
+	"strconv"
+
 	"github.com/bwoff11/frens/internal/database"
 	"github.com/bwoff11/frens/internal/models"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type CreateAccountBody struct {
@@ -46,13 +50,23 @@ func GetAccount(c *fiber.Ctx) error {
 	// Get account ID from URL
 	id := c.Params("id", "")
 	if id == "" {
+		log.Println("Error parsing account id from URL")
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	// Convert string to uint64
+	var accountID uint64
+	accountID, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		log.Println("Error parsing account id from URL to uint64")
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
 	// Get account from database
-	var account models.Account
-	if ok := database.GetAccount(id, &account); !ok {
-		return c.SendStatus(fiber.StatusInternalServerError)
+	account := database.GetAccount(accountID)
+	if account == nil {
+		log.Println("Error getting account from database: not found")
+		return c.SendStatus(fiber.StatusNotFound)
 	}
 
 	// Return account
@@ -62,8 +76,30 @@ func GetAccount(c *fiber.Ctx) error {
 func GetSelfAccount(c *fiber.Ctx) error {
 
 	// Get account ID from JWT
-	return c.JSON(map[string]string{
-		"username":   "cool_user",
-		"avatar_url": "https://cdn-icons-png.flaticon.com/512/147/147144.png",
-	})
+	user := c.Locals("user").(*jwt.Token)
+	if user == nil {
+		log.Println("Error parsing user from claims")
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+	claims := user.Claims.(jwt.MapClaims)
+	if claims["id"] == nil {
+		log.Println("Error parsing user id from claims")
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+	accountID := claims["id"].(float64)
+	if accountID == 0 {
+		log.Println("Error parsing user id from claims")
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+	accountIDUint64 := uint64(accountID)
+
+	// Get account from database
+	account := database.GetAccount(accountIDUint64)
+	if account == nil {
+		log.Println("Error getting account from database: not found")
+		return c.SendStatus(fiber.StatusNotFound)
+	}
+
+	// Return account
+	return c.JSON(account)
 }
