@@ -35,6 +35,11 @@ func CreateStatus(c *fiber.Ctx) error {
 		AccountID: accountIDUint64,
 	}
 
+	// Insert status into database
+	if ok := database.CreateStatus(&status); !ok {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
 	// Validate status
 	if err := status.Validate(); err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
