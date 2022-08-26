@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Account struct {
-	ID        uint64    `gorm:"primary_key" json:"-"`
+	ID        uint64    `gorm:"primary_key" json:"id"`
 	CreatedAt time.Time `gorm:"not null" json:"-"`
 	UpdatedAt time.Time `gorm:"not null" json:"-"`
 	//ActivatedAt   time.Time `gorm:"not null"`

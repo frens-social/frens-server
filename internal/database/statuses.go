@@ -16,9 +16,17 @@ func DeleteStatus(id string) bool {
 	return true
 }
 
+func GetStatus(id string) (*models.Status, error) {
+	var status models.Status
+	if err := database.Preload("Account").Where("id = ?", id).First(&status).Error; err != nil {
+		return nil, err
+	}
+	return &status, nil
+}
+
 func GetStatuses(count int) ([]models.Status, error) {
 	var statuses []models.Status
-	if err := database.Limit(count).Find(&statuses).Error; err != nil {
+	if err := database.Preload("Account").Limit(count).Find(&statuses).Error; err != nil {
 		return nil, err
 	}
 	return statuses, nil

@@ -44,6 +44,25 @@ func CreateStatus(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusOK)
 }
 
+func GetStatus(c *fiber.Ctx) error {
+
+	// Get status id
+	id := c.Params("id")
+	if id == "" {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	// Get status from database
+	status, err := database.GetStatus(id)
+	if err != nil {
+		log.Println("Error getting status:", err)
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	// Return status
+	return c.JSON(status)
+}
+
 func GetStatuses(c *fiber.Ctx) error {
 
 	// Read query parameters
@@ -79,8 +98,4 @@ func DeleteStatus(c *fiber.Ctx) error {
 
 	// Return status
 	return c.SendStatus(fiber.StatusOK)
-}
-
-func GetStatus(c *fiber.Ctx) error {
-	return c.SendStatus(fiber.StatusNotImplemented)
 }
