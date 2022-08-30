@@ -11,7 +11,7 @@ func CreateAccount(account *models.Account) bool {
 	return true
 }
 
-func GetAccount(id uint64) *models.Account {
+func GetAccount(id *uint64) *models.Account {
 	var account models.Account
 	if err := database.
 		Where("id = ?", id).

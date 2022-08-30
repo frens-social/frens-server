@@ -50,8 +50,11 @@ func addAuthenticatedRoutes() {
 	// Accounts
 	v1.Get("/accounts", handlers.GetAllAccounts)
 	v1.Post("/accounts", handlers.CreateAccount)
-	v1.Get("/accounts/self", handlers.GetSelfAccount)
 	v1.Get("/accounts/:id", handlers.GetAccount)
+	v1.Get("/accounts/:id/statuses", handlers.GetAccountStatuses)
+	v1.Get("/accounts/:id/followers", handlers.GetAccountFollowers)
+	v1.Post("/accounts/:id/followers", handlers.FollowAccount)
+	v1.Get("/accounts/:id/following", handlers.GetAccountFollowing)
 
 	// Statuses
 	v1.Post("/statuses", handlers.CreateStatus)
