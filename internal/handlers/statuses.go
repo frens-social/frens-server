@@ -6,11 +6,11 @@ import (
 	"github.com/bwoff11/frens/internal/database"
 	"github.com/bwoff11/frens/internal/models"
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v4"
 )
 
 type CreateStatusBody struct {
-	Text string `json:"text" validate:"required"`
+	Text    string               `json:"text" validate:"required"`
+	Privacy models.StatusPrivacy `json:"privacy" validate:"required"`
 }
 
 func CreateStatus(c *fiber.Ctx) error {
@@ -22,28 +22,17 @@ func CreateStatus(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	// Parse account id from claims
-	user := c.Locals("user").(*jwt.Token)
-	if user == nil {
-		log.Println("Error parsing user from claims")
+	// Get user id
+	accountID, err := getRequestorID(c)
+	if err != nil {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
-	claims := user.Claims.(jwt.MapClaims)
-	if claims["id"] == nil {
-		log.Println("Error parsing user id from claims")
-		return c.SendStatus(fiber.StatusUnauthorized)
-	}
-	accountID := claims["id"].(float64)
-	if accountID == 0 {
-		log.Println("Error parsing user id from claims")
-		return c.SendStatus(fiber.StatusUnauthorized)
-	}
-	accountIDUint64 := uint64(accountID)
 
 	// Convert to status
 	status := models.Status{
 		Text:      body.Text,
-		AccountID: accountIDUint64,
+		AccountID: *accountID,
+		Privacy:   body.Privacy,
 	}
 
 	// Validate status
