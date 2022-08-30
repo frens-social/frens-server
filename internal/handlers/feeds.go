@@ -1,35 +1,28 @@
 package handlers
 
 import (
-	"log"
-
 	"github.com/bwoff11/frens/internal/database"
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v4"
 )
 
 func GetHomeFeed(c *fiber.Ctx) error {
 
-	// Get account ID from JWT
-	user := c.Locals("user").(*jwt.Token)
-	if user == nil {
-		log.Println("Error parsing user from claims")
-		return c.SendStatus(fiber.StatusUnauthorized)
-	}
-	claims := user.Claims.(jwt.MapClaims)
-	if claims["id"] == nil {
-		log.Println("Error parsing user id from claims")
-		return c.SendStatus(fiber.StatusUnauthorized)
-	}
-	accountID := claims["id"].(float64)
-	if accountID == 0 {
-		log.Println("Error parsing user id from claims")
-		return c.SendStatus(fiber.StatusUnauthorized)
-	}
-	accountIDUint64 := uint64(accountID)
+	/*
+		// Get account ID from JWT
+		accountID, err := getRequestorID(c)
+		if err != nil {
+			return c.SendStatus(fiber.StatusUnauthorized)
+		}
 
-	// Get list of followed accounts from database
-	followedAccounts, err := database.GetFollowedAccounts(accountIDUint64)
+		// Get list of followed accounts from database
+		followedAccounts, err := database.GetFollowedAccountIDs(accountID)
+
+		// Include self in list of followed accounts
+		followedAccounts = append(followedAccounts, *accountID)
+
+	*/
+
+	return c.SendStatus(fiber.StatusNotImplemented)
 
 }
 
