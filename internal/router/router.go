@@ -44,6 +44,9 @@ func addAuthenticatedRoutes() {
 	api := app.Group("/api")
 	v1 := api.Group("/v1")
 
+	// Authentication
+	v1.Get("/auth/check", handlers.CheckAuth)
+
 	// Accounts
 	v1.Get("/accounts", handlers.GetAllAccounts)
 	v1.Post("/accounts", handlers.CreateAccount)

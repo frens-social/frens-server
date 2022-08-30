@@ -47,3 +47,7 @@ func Login(c *fiber.Ctx) error {
 		"token": t,
 	})
 }
+
+func CheckAuth(c *fiber.Ctx) error {
+	return c.SendStatus(fiber.StatusOK)
+}
