@@ -23,11 +23,3 @@ func GetStatus(id string) (*models.Status, error) {
 	}
 	return &status, nil
 }
-
-func GetStatuses(count int) ([]models.Status, error) {
-	var statuses []models.Status
-	if err := database.Preload("Account").Limit(count).Order("created_at desc").Find(&statuses).Error; err != nil {
-		return nil, err
-	}
-	return statuses, nil
-}

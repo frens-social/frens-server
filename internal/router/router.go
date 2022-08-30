@@ -55,16 +55,16 @@ func addAuthenticatedRoutes() {
 
 	// Statuses
 	v1.Post("/statuses", handlers.CreateStatus)
-	v1.Get("/statuses", handlers.GetStatuses)
 	v1.Delete("/statuses/:id", handlers.DeleteStatus)
 	v1.Get("/statuses/:id", handlers.GetStatus)
 
-	// Favourites
-	//v1.Post("/status/:id/favourites", handlers.GetFavouritedBy)
-	//v1.Post("/status/:id/favourites", handlers.CreateFavourite)
-	//v1.Delete("/status/:id/favourites", handlers.DeleteFavourite)
-
 	// Feeds
+	v1.Get("/feeds/home", handlers.GetHomeFeed)
+	v1.Get("/feeds/public", handlers.GetPublicFeed)
+	v1.Get("/feeds/federated", handlers.GetFederatedFeed)
+	v1.Get("/feeds/user/self", handlers.GetSelfFeed)
+	v1.Get("/feeds/user/:id", handlers.GetUserFeed)
+	v1.Get("/feeds/tag/:tag", handlers.GetTagFeed)
 
 }
 

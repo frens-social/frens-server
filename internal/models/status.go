@@ -6,6 +6,15 @@ import (
 	"github.com/go-playground/validator"
 )
 
+type StatusPrivacy string
+
+const (
+	PrivacyPublic  StatusPrivacy = "public"
+	PrivacyLocal   StatusPrivacy = "local"
+	PrivacyFriends StatusPrivacy = "friends"
+	PrivacyPrivate StatusPrivacy = "private"
+)
+
 type Status struct {
 	ID        uint64    `json:"id" gorm:"primary_key"`
 	CreatedAt time.Time `gorm:"not null" json:"created_at"`
