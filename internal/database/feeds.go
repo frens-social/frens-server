@@ -32,3 +32,19 @@ func GetPublicFeed(continueFrom *int) ([]*models.Status, error) {
 	}
 	return statuses, nil
 }
+
+func GetUserFeed(userId string, continueFrom *int) ([]*models.Status, error) {
+	limit := 20
+
+	var statuses []*models.Status
+	if err := database.
+		Preload("Account").
+		Where("privacy = ?", "public").
+		Where("account_id = ?", userId).
+		Order("created_at desc").
+		Limit(limit).
+		Find(&statuses).Error; err != nil {
+		return nil, err
+	}
+	return statuses, nil
+}
