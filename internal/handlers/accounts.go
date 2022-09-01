@@ -60,6 +60,7 @@ func GetAccount(c *fiber.Ctx) error {
 		var err error
 		accountID, err = getRequestorID(c)
 		if err != nil {
+			log.Println("Error getting requestor ID from JWT")
 			return err
 		}
 	} else {

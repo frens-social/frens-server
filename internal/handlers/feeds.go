@@ -7,22 +7,16 @@ import (
 
 func GetHomeFeed(c *fiber.Ctx) error {
 
-	/*
-		// Get account ID from JWT
-		accountID, err := getRequestorID(c)
-		if err != nil {
-			return c.SendStatus(fiber.StatusUnauthorized)
-		}
+	// PLACEHOLDER
 
-		// Get list of followed accounts from database
-		followedAccounts, err := database.GetFollowedAccountIDs(accountID)
+	// Get statuses from database
+	statuses, err := database.GetPublicFeed(nil)
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
 
-		// Include self in list of followed accounts
-		followedAccounts = append(followedAccounts, *accountID)
-
-	*/
-
-	return c.SendStatus(fiber.StatusNotImplemented)
+	// Send statuses to client
+	return c.JSON(statuses)
 
 }
 
