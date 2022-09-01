@@ -41,18 +41,7 @@ func GetFederatedFeed(c *fiber.Ctx) error {
 }
 
 func GetUserFeed(c *fiber.Ctx) error {
-
-	// Params
-	userId := c.Params("id")
-
-	// Get statuses from database
-	statuses, err := database.GetUserFeed(userId, nil)
-	if err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
-	}
-
-	// Send statuses to client
-	return c.JSON(statuses)
+	return c.SendStatus(fiber.StatusNotImplemented)
 }
 
 func GetSelfFeed(c *fiber.Ctx) error {
