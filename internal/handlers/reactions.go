@@ -76,7 +76,30 @@ func GetStatusReactions(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	// Get reactions
+	// Get query params
+	userId := c.Query("user")
+
+	// If userID is provided, convert to uint
+	var userIDuint uint64
+	if userId != "" {
+		userIDuint, err = strconv.ParseUint(userId, 10, 64)
+		if err != nil {
+			log.Println("Error parsing user id:", err)
+			return c.SendStatus(fiber.StatusBadRequest)
+		}
+	}
+
+	// If userID is provided, get reactions for that user
+	if userId != "" {
+		reactions, err := database.GetUserStatusReactions(statusIDuint, userIDuint)
+		if err != nil {
+			log.Println("Error getting reactions:", err)
+			return err
+		}
+		return c.Status(200).JSON(reactions)
+	}
+
+	// Otherwise, get all reactions
 	reactions, err := database.GetStatusReactions(statusIDuint)
 	if err != nil {
 		log.Println("Error getting reactions:", err)

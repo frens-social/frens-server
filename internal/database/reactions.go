@@ -16,3 +16,11 @@ func GetStatusReactions(statusID uint64) ([]models.Reaction, error) {
 	}
 	return reactions, nil
 }
+
+func GetUserStatusReactions(statusID uint64, userID uint64) ([]models.Reaction, error) {
+	var reactions []models.Reaction
+	if err := database.Where("status_id = ? AND account_id = ?", statusID, userID).Find(&reactions).Error; err != nil {
+		return nil, err
+	}
+	return reactions, nil
+}
