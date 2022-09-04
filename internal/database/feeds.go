@@ -2,13 +2,13 @@ package database
 
 import "github.com/bwoff11/frens/internal/models"
 
-// Partial implementation. Needs to take followed accounts into account.
+// Partial implementation. Needs to take followed users into user.
 func GetHomeFeed(continueFrom *int) ([]*models.Status, error) {
 	limit := 20
 
 	var statuses []*models.Status
 	if err := database.
-		Preload("Account").
+		Preload("User").
 		Where("privacy = ?", "public").
 		Order("created_at desc").
 		Limit(limit).
@@ -23,7 +23,7 @@ func GetPublicFeed(continueFrom *int) ([]*models.Status, error) {
 
 	var statuses []*models.Status
 	if err := database.
-		Preload("Account").
+		Preload("User").
 		Where("privacy = ?", "public").
 		Order("created_at desc").
 		Limit(limit).
@@ -38,9 +38,9 @@ func GetUserFeed(userId string, continueFrom *int) ([]*models.Status, error) {
 
 	var statuses []*models.Status
 	if err := database.
-		Preload("Account").
+		Preload("User").
 		Where("privacy = ?", "public").
-		Where("account_id = ?", userId).
+		Where("user_id = ?", userId).
 		Order("created_at desc").
 		Limit(limit).
 		Find(&statuses).Error; err != nil {

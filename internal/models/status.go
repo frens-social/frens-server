@@ -19,8 +19,8 @@ type Status struct {
 	ID        uint64        `json:"id" gorm:"primary_key"`
 	CreatedAt time.Time     `gorm:"not null" json:"created_at"`
 	UpdatedAt time.Time     `gorm:"not null" json:"updated_at"`
-	AccountID uint64        `json:"-" gorm:"column:account_id"`
-	User      User          `json:"account" gorm:"foreignkey:AccountID"`
+	UserID    uint64        `json:"-" gorm:"column:user_id"`
+	User      User          `json:"user" gorm:"foreignkey:UserID"`
 	Text      string        `json:"text" validate:"required"`
 	Privacy   StatusPrivacy `json:"privacy" validate:"required"`
 }

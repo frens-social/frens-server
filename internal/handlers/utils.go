@@ -18,12 +18,12 @@ func getRequestorID(c *fiber.Ctx) (*uint64, error) {
 		log.Println("Error parsing user id from claims")
 		return nil, c.SendStatus(fiber.StatusUnauthorized)
 	}
-	accountID := claims["id"].(float64)
-	if accountID == 0 {
+	userID := claims["id"].(float64)
+	if userID == 0 {
 		log.Println("Error parsing user id from claims")
 		return nil, c.SendStatus(fiber.StatusUnauthorized)
 	}
 
-	uint64ID := uint64(accountID)
+	uint64ID := uint64(userID)
 	return &uint64ID, nil
 }

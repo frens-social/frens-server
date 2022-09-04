@@ -23,16 +23,16 @@ func CreateStatus(c *fiber.Ctx) error {
 	}
 
 	// Get user id
-	accountID, err := getRequestorID(c)
+	userID, err := getRequestorID(c)
 	if err != nil {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
 
 	// Convert to status
 	status := models.Status{
-		Text:      body.Text,
-		AccountID: *accountID,
-		Privacy:   body.Privacy,
+		Text:    body.Text,
+		UserID:  *userID,
+		Privacy: body.Privacy,
 	}
 
 	// Validate status

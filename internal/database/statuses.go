@@ -18,7 +18,7 @@ func DeleteStatus(id string) bool {
 
 func GetStatus(id string) (*models.Status, error) {
 	var status models.Status
-	if err := database.Preload("Account").Where("id = ?", id).First(&status).Error; err != nil {
+	if err := database.Preload("User").Where("id = ?", id).First(&status).Error; err != nil {
 		return nil, err
 	}
 	return &status, nil

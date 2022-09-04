@@ -24,7 +24,7 @@ func CreateReaction(c *fiber.Ctx) error {
 	}
 
 	// Get user id
-	accountID, err := getRequestorID(c)
+	userID, err := getRequestorID(c)
 	if err != nil {
 		log.Println("Error getting requestor id:", err)
 		return c.SendStatus(fiber.StatusUnauthorized)
@@ -45,9 +45,9 @@ func CreateReaction(c *fiber.Ctx) error {
 
 	// Create reaction
 	reaction := models.Reaction{
-		AccountID: *accountID,
-		StatusID:  statusIDuint,
-		Emoji:     req.Emoji,
+		UserID:   *userID,
+		StatusID: statusIDuint,
+		Emoji:    req.Emoji,
 	}
 
 	// Insert reaction into database
