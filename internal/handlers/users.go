@@ -28,7 +28,8 @@ func CreateUser(c *fiber.Ctx) error {
 
 	// Create User object
 	var newUser = models.User{
-		Username: body.Username,
+		Username:    body.Username,
+		DisplayName: body.Username,
 	}
 
 	// Insert User into database
