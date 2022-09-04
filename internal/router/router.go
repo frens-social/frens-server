@@ -47,14 +47,14 @@ func addAuthenticatedRoutes() {
 	// Authentication
 	v1.Get("/auth/check", handlers.CheckAuth)
 
-	// Accounts
-	v1.Get("/accounts", handlers.GetAllAccounts)
-	v1.Post("/accounts", handlers.CreateAccount)
-	v1.Get("/accounts/:id", handlers.GetAccount)
-	//v1.Get("/accounts/:id/statuses", handlers.GetAccountStatuses)
-	//v1.Get("/accounts/:id/followers", handlers.GetAccountFollowers)
-	//v1.Post("/accounts/:id/followers", handlers.FollowAccount)
-	//v1.Get("/accounts/:id/following", handlers.GetAccountFollowing)
+	// Users
+	v1.Get("/users", handlers.GetAllUsers)
+	v1.Post("/users", handlers.CreateUser)
+	v1.Get("/users/:id", handlers.GetUser)
+	//v1.Get("/users/:id/statuses", handlers.GetUserStatuses)
+	//v1.Get("/users/:id/followers", handlers.GetUserFollowers)
+	//v1.Post("/users/:id/followers", handlers.FollowUser)
+	//v1.Get("/users/:id/following", handlers.GetUserFollowing)
 
 	// Reactions
 	v1.Get("/statuses/:id/reactions", handlers.GetStatusReactions)

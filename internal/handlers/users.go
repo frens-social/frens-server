@@ -9,15 +9,15 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type CreateAccountBody struct {
+type CreateUserBody struct {
 	Username string `json:"username" validate:"required"`
 	Password string `json:"password" validate:"required"`
 }
 
-func CreateAccount(c *fiber.Ctx) error {
+func CreateUser(c *fiber.Ctx) error {
 
 	// Parse request body
-	var body CreateAccountBody
+	var body CreateUserBody
 	if err := c.BodyParser(&body); err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
@@ -26,13 +26,13 @@ func CreateAccount(c *fiber.Ctx) error {
 
 	// TODO: Salt and hash password
 
-	// Create account object
-	var newAccount = models.Account{
+	// Create User object
+	var newUser = models.User{
 		Username: body.Username,
 	}
 
-	// Insert account into database
-	if ok := database.CreateAccount(&newAccount); !ok {
+	// Insert User into database
+	if ok := database.CreateUser(&newUser); !ok {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
@@ -40,45 +40,45 @@ func CreateAccount(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusCreated)
 }
 
-func GetAllAccounts(c *fiber.Ctx) error {
+func GetAllUsers(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusNotImplemented)
 }
 
-func GetAccount(c *fiber.Ctx) error {
+func GetUser(c *fiber.Ctx) error {
 
-	// Get account ID from URL
+	// Get User ID from URL
 	id := c.Params("id", "")
 	if id == "" {
-		log.Println("Error parsing account id from URL")
+		log.Println("Error parsing User id from URL")
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	// Get account ID
-	var accountID *uint64
-	// If ID is self, get account from JWT
+	// Get User ID
+	var UserID *uint64
+	// If ID is self, get User from JWT
 	if id == "self" {
 		var err error
-		accountID, err = getRequestorID(c)
+		UserID, err = getRequestorID(c)
 		if err != nil {
 			log.Println("Error getting requestor ID from JWT")
 			return err
 		}
 	} else {
-		parsedAccountID, err := strconv.ParseUint(id, 10, 64)
+		parsedUserID, err := strconv.ParseUint(id, 10, 64)
 		if err != nil {
-			log.Println("Error parsing account id from URL to uint64")
+			log.Println("Error parsing User id from URL to uint64")
 			return c.SendStatus(fiber.StatusBadRequest)
 		}
-		accountID = &parsedAccountID
+		UserID = &parsedUserID
 	}
 
-	// Get account from database
-	account := database.GetAccount(accountID)
-	if account == nil {
-		log.Println("Error getting account from database: not found")
+	// Get User from database
+	User := database.GetUser(UserID)
+	if User == nil {
+		log.Println("Error getting User from database: not found")
 		return c.SendStatus(fiber.StatusNotFound)
 	}
 
-	// Return account
-	return c.JSON(account)
+	// Return User
+	return c.JSON(User)
 }

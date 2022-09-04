@@ -31,7 +31,7 @@ func Connect() {
 	}
 
 	if err := database.AutoMigrate(
-		&models.Account{},
+		&models.User{},
 		&models.Status{},
 		&models.Follow{},
 		&models.Reaction{},
