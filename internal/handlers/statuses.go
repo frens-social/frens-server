@@ -6,13 +6,18 @@ import (
 	"github.com/bwoff11/frens/internal/database"
 	"github.com/bwoff11/frens/internal/models"
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 )
 
 type CreateStatusBody struct {
-	Text     string               `json:"text" validate:"required"`
-	MediaIDs []uuid.UUID          `json:"media_ids"`
-	Privacy  models.StatusPrivacy `json:"privacy" validate:"required"`
+	Text      string               `json:"text" validate:"required"`
+	Privacy   models.StatusPrivacy `json:"privacy" validate:"required"`
+	QuickPost bool                 `json:"quick_post"`
+}
+
+type UpdateStatusRequest struct {
+	Text    string               `json:"text" validate:"required"`
+	Privacy models.StatusPrivacy `json:"privacy" validate:"required"`
+	State   models.StatusState   `json:"state" validate:"required"`
 }
 
 func CreateStatus(c *fiber.Ctx) error {
@@ -81,6 +86,65 @@ func DeleteStatus(c *fiber.Ctx) error {
 
 	// Delete status from database
 	if ok := database.DeleteStatus(id); !ok {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	// Return status
+	return c.SendStatus(fiber.StatusOK)
+}
+
+func UpdateStatus(c *fiber.Ctx) error {
+
+	// Get status id
+	id := c.Params("id")
+	if id == "" {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	// Parse request body
+	var req UpdateStatusRequest
+	if err := c.BodyParser(&req); err != nil {
+		log.Println("Error parsing request body:", err)
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	// Get user id
+	userID, err := getRequestorID(c)
+	if err != nil {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+
+	// Get original status
+	status, err := database.GetStatus(id)
+	if err != nil {
+		log.Println("Error getting status:", err)
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	// Check if user is authorized to update status
+	if status.UserID != *userID {
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+
+	// Update status
+	if req.Text != "" {
+		status.Text = req.Text
+	}
+	if req.Privacy != "" {
+		status.Privacy = req.Privacy
+	}
+	if req.State != "" {
+		status.State = req.State
+	}
+
+	// Validate status
+	if err := status.Validate(); err != nil {
+		log.Println("Error validating status:", err)
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	// Update status in database
+	if ok := database.UpdateStatus(status); !ok {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 

@@ -7,12 +7,18 @@ import (
 )
 
 type StatusPrivacy string
+type StatusState string
 
 const (
 	PrivacyPublic  StatusPrivacy = "public"
 	PrivacyLocal   StatusPrivacy = "local"
 	PrivacyFriends StatusPrivacy = "friends"
 	PrivacyPrivate StatusPrivacy = "private"
+)
+
+const (
+	StateDraft     StatusState = "draft"
+	StatePublished StatusState = "published"
 )
 
 type Status struct {
@@ -23,6 +29,7 @@ type Status struct {
 	User      User          `json:"user" gorm:"foreignkey:UserID"`
 	Text      string        `json:"text" validate:"required"`
 	Privacy   StatusPrivacy `json:"privacy" validate:"required"`
+	State     StatusState   `json:"state" validate:"required"`
 }
 
 func (s *Status) Validate() error {

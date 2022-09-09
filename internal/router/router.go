@@ -76,9 +76,10 @@ func addAuthenticatedRoutes() {
 	v1.Post("/statuses/:id/reactions", handlers.CreateReaction)
 
 	// Statuses
-	v1.Post("/statuses", handlers.CreateStatus)
-	v1.Delete("/statuses/:id", handlers.DeleteStatus)
 	v1.Get("/statuses/:id", handlers.GetStatus)
+	v1.Put("/statuses/:id", handlers.UpdateStatus)
+	v1.Delete("/statuses/:id", handlers.DeleteStatus)
+	v1.Post("/statuses", handlers.CreateStatus)
 
 	// Feeds
 	v1.Get("/feeds/home", handlers.GetHomeFeed)

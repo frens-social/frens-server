@@ -23,3 +23,10 @@ func GetStatus(id string) (*models.Status, error) {
 	}
 	return &status, nil
 }
+
+func UpdateStatus(status *models.Status) bool {
+	if err := database.Save(status).Error; err != nil {
+		return false
+	}
+	return true
+}
