@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"log"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
@@ -10,6 +12,7 @@ func UploadMedia(c *fiber.Ctx) error {
 	// Get file
 	file, err := c.FormFile("file")
 	if err != nil {
+		log.Println("Error getting file from form: ", err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"success": false,
 			"error":   err.Error(),
@@ -31,6 +34,12 @@ func UploadMedia(c *fiber.Ctx) error {
 	// Return success
 	return c.JSON(fiber.Map{
 		"success": true,
-		"file":    file.Filename,
+		"id":      id,
 	})
+}
+
+func GetMedia(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	return c.SendFile("./media/" + id)
 }

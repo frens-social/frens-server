@@ -22,6 +22,12 @@ func Create() {
 
 	app.Use(jwtware.New(jwtware.Config{
 		SigningKey: []byte("secret"),
+		ErrorHandler: func(c *fiber.Ctx, err error) error {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"success": false,
+				"error":   err.Error(),
+			})
+		},
 	}))
 
 	addAuthenticatedRoutes()
@@ -38,6 +44,9 @@ func addUnauthenticatedRoutes() {
 
 	// Authentication
 	v1.Post("/auth/login", handlers.Login)
+
+	// Media
+	v1.Get("/media/:id", handlers.GetMedia)
 }
 
 func addAuthenticatedRoutes() {
