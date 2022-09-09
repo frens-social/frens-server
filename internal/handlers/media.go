@@ -40,6 +40,5 @@ func UploadMedia(c *fiber.Ctx) error {
 
 func GetMedia(c *fiber.Ctx) error {
 	id := c.Params("id")
-
 	return c.SendFile("./media/" + id)
 }

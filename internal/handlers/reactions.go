@@ -44,7 +44,7 @@ func CreateReaction(c *fiber.Ctx) error {
 	}
 
 	// Create reaction
-	reaction := models.Reaction{
+	reaction := models.StatusReaction{
 		UserID:   *userID,
 		StatusID: statusIDuint,
 		Emoji:    req.Emoji,

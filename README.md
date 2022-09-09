@@ -13,8 +13,12 @@ Anyone interested in the project is more than welcome to contribute.
 - https://github.com/dgraph-io/badger
 - https://github.com/postgres/postgres
 
+# Design
+Frens is designed to be modular, supporting multiple forms of submission and retrieval of data. This allows for easy customization of frontends. When designing a frontend, its not necessary to use all features of the server, in fact, it is encouraged not to do so. This allows for a more diverse ecosystem of frontends.
 
-# Setup
+## API
+
+The API is designed to avoid as much nesting as possible, instead perferring to use multiple endpoints. For example, statuses do not incude reactions and media, but instead have their own endpoints. This allows for more flexibility in the frontend, and allows for more efficient caching.
 
 ## Reverse Proxy
 

@@ -6,11 +6,13 @@ import (
 	"github.com/bwoff11/frens/internal/database"
 	"github.com/bwoff11/frens/internal/models"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 type CreateStatusBody struct {
-	Text    string               `json:"text" validate:"required"`
-	Privacy models.StatusPrivacy `json:"privacy" validate:"required"`
+	Text     string               `json:"text" validate:"required"`
+	MediaIDs []uuid.UUID          `json:"media_ids"`
+	Privacy  models.StatusPrivacy `json:"privacy" validate:"required"`
 }
 
 func CreateStatus(c *fiber.Ctx) error {

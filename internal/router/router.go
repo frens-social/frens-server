@@ -65,6 +65,11 @@ func addAuthenticatedRoutes() {
 	//v1.Post("/users/:id/followers", handlers.FollowUser)
 	//v1.Get("/users/:id/following", handlers.GetUserFollowing)
 
+	// Status Media
+	v1.Get("/statuses/:statusID/media", handlers.GetStatusMedia)
+	v1.Post("/statuses/:statusID/media", handlers.CreateStatusMedia)
+	v1.Delete("/statuses/:statusID/media/:mediaID", handlers.DeleteStatusMedia)
+
 	// Reactions
 	v1.Get("/statuses/:id/reactions", handlers.GetStatusReactions)
 	v1.Get("statuses/:id/reactions/counts", handlers.GetStatusReactionsCounts)

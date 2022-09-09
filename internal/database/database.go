@@ -34,7 +34,8 @@ func Connect() {
 		&models.User{},
 		&models.Status{},
 		&models.Follow{},
-		&models.Reaction{},
+		&models.StatusReaction{},
+		&models.StatusMedia{},
 	); err != nil {
 		log.Fatalln(err)
 	}
