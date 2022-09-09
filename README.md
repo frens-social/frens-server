@@ -18,7 +18,7 @@ Frens is designed to be modular, supporting multiple forms of submission and ret
 
 ## API
 
-The API is designed to avoid as much nesting as possible, instead perferring to use multiple endpoints. For example, statuses do not incude reactions and media, but instead have their own endpoints. This allows for more flexibility in the frontend, and allows for more efficient caching.
+The API is designed to avoid as much nesting as possible, instead perferring to use multiple endpoints. For example, statuses do not incude reactions and media, but instead have their own endpoints. This allows for more flexibility in the frontend and more efficient caching.
 
 ## Reverse Proxy
 
