@@ -73,6 +73,9 @@ func addAuthenticatedRoutes() {
 	v1.Get("/feeds/user/self", handlers.GetSelfFeed)
 	v1.Get("/feeds/user/:id", handlers.GetUserFeed)
 	v1.Get("/feeds/tag/:tag", handlers.GetTagFeed)
+
+	// Media
+	v1.Post("/media", handlers.UploadMedia)
 }
 
 func Run() {
