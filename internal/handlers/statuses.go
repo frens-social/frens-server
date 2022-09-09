@@ -31,15 +31,26 @@ func CreateStatus(c *fiber.Ctx) error {
 
 	// Get user id
 	userID, err := getRequestorID(c)
-	if err != nil {
+	if err != nil || userID == nil {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
+	log.Println(*userID)
 
 	// Convert to status
 	status := models.Status{
 		Text:    body.Text,
 		UserID:  *userID,
 		Privacy: body.Privacy,
+	}
+
+	// Default values
+	if status.Privacy == "" {
+		status.Privacy = models.PrivacyPublic
+	}
+	if body.QuickPost {
+		status.State = models.StatePublished
+	} else {
+		status.State = models.StateDraft
 	}
 
 	// Validate status
