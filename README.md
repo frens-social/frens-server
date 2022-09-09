@@ -20,6 +20,9 @@ Frens is designed to be modular, supporting multiple forms of submission and ret
 
 The API is designed to avoid as much nesting as possible, instead perferring to use multiple endpoints. For example, statuses do not incude reactions and media, but instead have their own endpoints. This allows for more flexibility in the frontend and more efficient caching.
 
+## Code
+This server, above all else, is an API server. Requests are first handled by the router package, which then passes the request to the appropriate handler in the handlers package. The handlers package is responsible for processing requests and returning responses. Often, it will call upon transactional functions in the database package.
+
 ## Reverse Proxy
 
 The frens server is not meant to recieve requests from end users directly. Instead, it uses a reverse proxy to forward requests to the server. Many frontends have the reverse proxy setup included as part of their setup instructions, but in order to support clients such as Pinafore, we need to set up a reverse proxy ourselves.
