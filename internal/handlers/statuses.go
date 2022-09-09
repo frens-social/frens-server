@@ -15,9 +15,9 @@ type CreateStatusBody struct {
 }
 
 type UpdateStatusRequest struct {
-	Text    string               `json:"text" validate:"required"`
-	Privacy models.StatusPrivacy `json:"privacy" validate:"required"`
-	State   models.StatusState   `json:"state" validate:"required"`
+	Text      string               `json:"text" validate:"required"`
+	Privacy   models.StatusPrivacy `json:"privacy" validate:"required"`
+	Published *bool                `json:"published"`
 }
 
 func CreateStatus(c *fiber.Ctx) error {
@@ -47,11 +47,7 @@ func CreateStatus(c *fiber.Ctx) error {
 	if status.Privacy == "" {
 		status.Privacy = models.PrivacyPublic
 	}
-	if body.QuickPost {
-		status.State = models.StatePublished
-	} else {
-		status.State = models.StateDraft
-	}
+	status.Published = body.QuickPost
 
 	// Validate status
 	if err := status.Validate(); err != nil {
@@ -144,8 +140,8 @@ func UpdateStatus(c *fiber.Ctx) error {
 	if req.Privacy != "" {
 		status.Privacy = req.Privacy
 	}
-	if req.State != "" {
-		status.State = req.State
+	if req.Published != nil {
+		status.Published = *req.Published
 	}
 
 	// Validate status

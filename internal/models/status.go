@@ -16,11 +16,6 @@ const (
 	PrivacyPrivate StatusPrivacy = "private"
 )
 
-const (
-	StateDraft     StatusState = "draft"
-	StatePublished StatusState = "published"
-)
-
 type Status struct {
 	ID        uint64        `json:"id" gorm:"primary_key"`
 	CreatedAt time.Time     `gorm:"not null" json:"created_at"`
@@ -29,7 +24,7 @@ type Status struct {
 	User      User          `json:"user" gorm:"foreignkey:UserID"`
 	Text      string        `json:"text" validate:"required"`
 	Privacy   StatusPrivacy `json:"privacy" validate:"required"`
-	State     StatusState   `json:"state" validate:"required"`
+	Published bool          `json:"published" gorm:"default:false"`
 }
 
 func (s *Status) Validate() error {
