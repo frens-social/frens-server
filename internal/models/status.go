@@ -10,10 +10,10 @@ type StatusPrivacy string
 type StatusState string
 
 const (
-	PrivacyPublic    StatusPrivacy = "public"
-	PrivacyLocal     StatusPrivacy = "local"
-	PrivacyFollowers StatusPrivacy = "followers"
-	PrivacyPrivate   StatusPrivacy = "private"
+	StatusPrivacyPublic    StatusPrivacy = "public"
+	StatusPrivacyLocal     StatusPrivacy = "local"
+	StatusPrivacyFollowers StatusPrivacy = "followers"
+	StatusPrivacyPrivate   StatusPrivacy = "private"
 )
 
 type Status struct {
