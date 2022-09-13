@@ -39,8 +39,8 @@ func CreateStatus(c *fiber.Ctx) error {
 	status := models.Status{
 		Text:    body.Text,
 		UserID:  *userID,
-		Privacy: models.StatusPrivacyPrivate, // Placeholder, need to get optional value from body
-		Draft:   false,                       // Placeholder, need to get optional value from body
+		Privacy: models.StatusPrivacyPublic, // Placeholder, need to get optional value from body
+		Draft:   false,                      // Placeholder, need to get optional value from body
 	}
 
 	// Validate status
