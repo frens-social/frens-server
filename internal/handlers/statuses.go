@@ -9,10 +9,10 @@ import (
 )
 
 type CreateStatusBody struct {
-	Text     string               `json:"text" validate:"required"`
-	MediaIDs []string             `json:"media_ids"`
-	Privacy  models.StatusPrivacy `json:"privacy" validate:"required"`
-	Draft    bool                 `json:"draft" validate:"required"`
+	Text     string                `json:"text" validate:"required"`
+	MediaIDs []*string             `json:"media_ids"`
+	Privacy  *models.StatusPrivacy `json:"privacy" validate:"required"`
+	Draft    *bool                 `json:"draft" validate:"required"`
 }
 
 type UpdateStatusRequest struct {
@@ -34,14 +34,13 @@ func CreateStatus(c *fiber.Ctx) error {
 	if err != nil || userID == nil {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
-	log.Println(*userID)
 
 	// Convert to status
 	status := models.Status{
 		Text:    body.Text,
 		UserID:  *userID,
-		Privacy: body.Privacy,
-		Draft:   body.Draft,
+		Privacy: models.StatusPrivacyPrivate, // Placeholder, need to get optional value from body
+		Draft:   false,                       // Placeholder, need to get optional value from body
 	}
 
 	// Validate status
