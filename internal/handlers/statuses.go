@@ -51,9 +51,7 @@ func CreateStatus(c *fiber.Ctx) error {
 	}
 
 	// Insert status into database
-	var dbStatus *models.Status
-	dbStatus, ok := database.CreateStatus(&status)
-	if !ok {
+	if ok := database.CreateStatus(&status); !ok {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
@@ -71,7 +69,7 @@ func CreateStatus(c *fiber.Ctx) error {
 	// Insert media into database
 	for _, mediaID := range mediaIDs {
 		statusMedia := models.StatusMedia{
-			StatusID: dbStatus.ID,
+			StatusID: status.ID,
 			MediaID:  mediaID,
 		}
 		if ok := database.CreateStatusMedia(&statusMedia); !ok {
@@ -80,7 +78,7 @@ func CreateStatus(c *fiber.Ctx) error {
 	}
 
 	// Return status
-	return c.Status(fiber.StatusCreated).JSON(dbStatus)
+	return c.Status(fiber.StatusCreated).JSON(status)
 }
 
 func GetStatus(c *fiber.Ctx) error {

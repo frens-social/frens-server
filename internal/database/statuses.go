@@ -2,12 +2,11 @@ package database
 
 import "github.com/bwoff11/frens/internal/models"
 
-func CreateStatus(status *models.Status) (*models.Status, bool) {
-	var dbStatus models.Status
+func CreateStatus(status *models.Status) bool {
 	if err := database.Create(&status).Error; err != nil {
-		return nil, false
+		return false
 	}
-	return &dbStatus, true
+	return true
 }
 
 func DeleteStatus(id string) bool {
