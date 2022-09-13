@@ -37,8 +37,10 @@ func CreateStatus(c *fiber.Ctx) error {
 
 	// Convert to status
 	status := models.Status{
-		Text:   body.Text,
-		UserID: *userID,
+		Text:    body.Text,
+		UserID:  *userID,
+		Privacy: body.Privacy,
+		Draft:   body.Draft,
 	}
 
 	// Validate status
