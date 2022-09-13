@@ -24,7 +24,7 @@ type Status struct {
 	User      User          `json:"user" gorm:"foreignkey:UserID"`
 	Text      string        `json:"text" validate:"required"`
 	Privacy   StatusPrivacy `json:"privacy" validate:"required"`
-	Published bool          `json:"published" gorm:"default:false"`
+	Draft     bool          `json:"draft" validate:"required"`
 }
 
 func (s *Status) Validate() error {

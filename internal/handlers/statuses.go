@@ -9,15 +9,14 @@ import (
 )
 
 type CreateStatusBody struct {
-	Text      string               `json:"text" validate:"required"`
-	Privacy   models.StatusPrivacy `json:"privacy" validate:"required"`
-	QuickPost bool                 `json:"quick_post"`
+	Text    string               `json:"text" validate:"required"`
+	Privacy models.StatusPrivacy `json:"privacy" validate:"required"`
+	Draft   bool                 `json:"draft" validate:"required"`
 }
 
 type UpdateStatusRequest struct {
-	Text      string               `json:"text" validate:"required"`
-	Privacy   models.StatusPrivacy `json:"privacy" validate:"required"`
-	Published *bool                `json:"published"`
+	Text    string               `json:"text" validate:"required"`
+	Privacy models.StatusPrivacy `json:"privacy" validate:"required"`
 }
 
 func CreateStatus(c *fiber.Ctx) error {
@@ -38,16 +37,9 @@ func CreateStatus(c *fiber.Ctx) error {
 
 	// Convert to status
 	status := models.Status{
-		Text:    body.Text,
-		UserID:  *userID,
-		Privacy: body.Privacy,
+		Text:   body.Text,
+		UserID: *userID,
 	}
-
-	// Default values
-	if status.Privacy == "" {
-		status.Privacy = models.PrivacyPublic
-	}
-	status.Published = body.QuickPost
 
 	// Validate status
 	if err := status.Validate(); err != nil {
@@ -139,9 +131,6 @@ func UpdateStatus(c *fiber.Ctx) error {
 	}
 	if req.Privacy != "" {
 		status.Privacy = req.Privacy
-	}
-	if req.Published != nil {
-		status.Published = *req.Published
 	}
 
 	// Validate status
