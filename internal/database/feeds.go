@@ -2,7 +2,7 @@ package database
 
 import "github.com/bwoff11/frens/internal/models"
 
-// Partial implementation. Needs to take followed users into user.
+// Partial implementation. Needs to take followed users into account.
 func GetHomeFeed(continueFrom *int) ([]*models.Status, error) {
 	limit := 20
 
