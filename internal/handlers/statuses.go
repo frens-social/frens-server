@@ -6,11 +6,12 @@ import (
 	"github.com/bwoff11/frens/internal/database"
 	"github.com/bwoff11/frens/internal/models"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 type CreateStatusBody struct {
 	Text     string                `json:"text" validate:"required"`
-	MediaIDs []*string             `json:"media_ids"`
+	MediaIDs []string              `json:"media_ids"`
 	Privacy  *models.StatusPrivacy `json:"privacy" validate:"required"`
 	Draft    *bool                 `json:"draft" validate:"required"`
 }
@@ -50,12 +51,36 @@ func CreateStatus(c *fiber.Ctx) error {
 	}
 
 	// Insert status into database
-	if ok := database.CreateStatus(&status); !ok {
+	var dbStatus *models.Status
+	dbStatus, ok := database.CreateStatus(&status)
+	if !ok {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
+	// Convert media ids to uuids
+	var mediaIDs []uuid.UUID
+	for _, mediaID := range body.MediaIDs {
+		uuid, err := uuid.Parse(mediaID)
+		if err != nil {
+			log.Println("Error parsing media id:", err)
+			return c.SendStatus(fiber.StatusBadRequest)
+		}
+		mediaIDs = append(mediaIDs, uuid)
+	}
+
+	// Insert media into database
+	for _, mediaID := range mediaIDs {
+		statusMedia := models.StatusMedia{
+			StatusID: dbStatus.ID,
+			MediaID:  mediaID,
+		}
+		if ok := database.CreateStatusMedia(&statusMedia); !ok {
+			return c.SendStatus(fiber.StatusInternalServerError)
+		}
+	}
+
 	// Return status
-	return c.SendStatus(fiber.StatusOK)
+	return c.Status(fiber.StatusCreated).JSON(dbStatus)
 }
 
 func GetStatus(c *fiber.Ctx) error {
