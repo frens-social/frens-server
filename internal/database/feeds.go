@@ -10,7 +10,7 @@ func GetHomeFeed(continueFrom *int) ([]*models.Status, error) {
 	if err := database.
 		Preload("User").
 		Where("privacy = ?", "public").
-		Where("published = ?", true).
+		Where("draft = ?", false).
 		Order("created_at desc").
 		Limit(limit).
 		Find(&statuses).Error; err != nil {
@@ -26,7 +26,7 @@ func GetPublicFeed(continueFrom *int) ([]*models.Status, error) {
 	if err := database.
 		Preload("User").
 		Where("privacy = ?", "public").
-		Where("published = ?", true).
+		Where("draft = ?", false).
 		Order("created_at desc").
 		Limit(limit).
 		Find(&statuses).Error; err != nil {
@@ -42,7 +42,7 @@ func GetUserFeed(userId string, continueFrom *int) ([]*models.Status, error) {
 	if err := database.
 		Preload("User").
 		Where("privacy = ?", "public").
-		Where("published = ?", true).
+		Where("draft = ?", false).
 		Where("user_id = ?", userId).
 		Order("created_at desc").
 		Limit(limit).
