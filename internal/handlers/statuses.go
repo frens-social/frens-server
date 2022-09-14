@@ -113,6 +113,13 @@ func DeleteStatus(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
+	// Delete StatusMedia from database
+	if ok := database.DeleteStatusMediaByStatusID(id); !ok {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	// TODO: Add file deletion
+
 	// Return status
 	return c.SendStatus(fiber.StatusOK)
 }

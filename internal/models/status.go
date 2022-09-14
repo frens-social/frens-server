@@ -26,8 +26,8 @@ type Status struct {
 	Text           string        `json:"text" validate:"required"`
 	Privacy        StatusPrivacy `json:"privacy" validate:"required"`
 	Draft          bool          `json:"draft"`
-	StatusMediaIDs uuid.UUID     `json:"-" gorm:"foreignkey:StatusID"`
-	StatusMedia    []StatusMedia `json:"media" gorm:"foreignkey:StatusID"`
+	StatusMediaIDs uuid.UUID     `json:"-" gorm:"foreignkey:StatusID;constraint:OnDelete:CASCADE;"`
+	StatusMedia    []StatusMedia `json:"media" gorm:"foreignkey:StatusID;constraint:OnDelete:CASCADE;"`
 }
 
 func (s *Status) Validate() error {
