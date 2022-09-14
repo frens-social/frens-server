@@ -8,8 +8,8 @@ import (
 
 type StatusMedia struct {
 	ID        uuid.UUID `json:"id" gorm:"primary_key"`
-	StatusID  uint64    `json:"status_id"`
-	Status    Status    `json:"status" gorm:"-"`
-	CreatedAt time.Time `gorm:"not null" json:"-"`
-	UpdatedAt time.Time `gorm:"not null" json:"-"`
+	CreatedAt time.Time `gorm:"not null" json:"created_at"`
+	UpdatedAt time.Time `gorm:"not null" json:"updated_at"`
+	StatusID  uint64    `json:"-"`
+	Status    Status    `json:"-" gorm:"-"`
 }

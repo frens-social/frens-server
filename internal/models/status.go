@@ -18,15 +18,16 @@ const (
 )
 
 type Status struct {
-	ID        uint64        `json:"id" gorm:"primary_key"`
-	CreatedAt time.Time     `gorm:"not null" json:"created_at"`
-	UpdatedAt time.Time     `gorm:"not null" json:"updated_at"`
-	UserID    uint64        `json:"-" gorm:"column:user_id"`
-	User      User          `json:"user" gorm:"foreignkey:UserID"`
-	Text      string        `json:"text" validate:"required"`
-	Privacy   StatusPrivacy `json:"privacy" validate:"required"`
-	Draft     bool          `json:"draft"`
-	MediaIDs  []uuid.UUID   `json:"media_ids" gorm:"type:uuid[]"`
+	ID             uint64        `json:"id" gorm:"primary_key"`
+	CreatedAt      time.Time     `gorm:"not null" json:"created_at"`
+	UpdatedAt      time.Time     `gorm:"not null" json:"updated_at"`
+	UserID         uint64        `json:"-" gorm:"column:user_id"`
+	User           User          `json:"user" gorm:"foreignkey:UserID"`
+	Text           string        `json:"text" validate:"required"`
+	Privacy        StatusPrivacy `json:"privacy" validate:"required"`
+	Draft          bool          `json:"draft"`
+	StatusMediaIDs uuid.UUID     `json:"-" gorm:"foreignkey:StatusID"`
+	StatusMedia    []StatusMedia `json:"media" gorm:"foreignkey:StatusID"`
 }
 
 func (s *Status) Validate() error {

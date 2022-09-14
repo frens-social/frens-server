@@ -9,6 +9,7 @@ func GetHomeFeed(continueFrom *int) ([]*models.Status, error) {
 	var statuses []*models.Status
 	if err := database.
 		Preload("User").
+		Preload("StatusMedia").
 		Where("privacy = ?", "public").
 		Where("draft = ?", false).
 		Order("created_at desc").
@@ -25,6 +26,7 @@ func GetPublicFeed(continueFrom *int) ([]*models.Status, error) {
 	var statuses []*models.Status
 	if err := database.
 		Preload("User").
+		Preload("StatusMedia").
 		Where("privacy = ?", "public").
 		Where("draft = ?", false).
 		Order("created_at desc").
@@ -41,6 +43,7 @@ func GetUserFeed(userId string, continueFrom *int) ([]*models.Status, error) {
 	var statuses []*models.Status
 	if err := database.
 		Preload("User").
+		Preload("StatusMedia").
 		Where("privacy = ?", "public").
 		Where("draft = ?", false).
 		Where("user_id = ?", userId).
