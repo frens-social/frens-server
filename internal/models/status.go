@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/go-playground/validator"
+	"github.com/google/uuid"
 )
 
 type StatusPrivacy string
@@ -25,6 +26,7 @@ type Status struct {
 	Text      string        `json:"text" validate:"required"`
 	Privacy   StatusPrivacy `json:"privacy" validate:"required"`
 	Draft     bool          `json:"draft"`
+	MediaIDs  []uuid.UUID   `json:"media_ids" gorm:"type:uuid[]"`
 }
 
 func (s *Status) Validate() error {

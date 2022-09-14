@@ -69,8 +69,8 @@ func CreateStatus(c *fiber.Ctx) error {
 	// Insert media into database
 	for _, mediaID := range mediaIDs {
 		statusMedia := models.StatusMedia{
+			ID:       mediaID,
 			StatusID: status.ID,
-			MediaID:  mediaID,
 		}
 		if ok := database.CreateStatusMedia(&statusMedia); !ok {
 			return c.SendStatus(fiber.StatusInternalServerError)
