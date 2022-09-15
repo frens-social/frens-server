@@ -114,6 +114,7 @@ func DeleteStatus(c *fiber.Ctx) error {
 	}
 
 	// Delete StatusMedia from database
+	// TODO: This should be replaced with cascading deletes
 	if ok := database.DeleteStatusMediaByStatusID(id); !ok {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}

@@ -26,7 +26,7 @@ type Status struct {
 	Text           string        `json:"text" validate:"required"`
 	Privacy        StatusPrivacy `json:"privacy" validate:"required"`
 	Draft          bool          `json:"draft"`
-	StatusMediaIDs uuid.UUID     `json:"-" gorm:"foreignkey:StatusID;constraint:OnDelete:CASCADE;"`
+	StatusMediaIDs uuid.UUID     `json:"-" gorm:"-"`
 	StatusMedia    []StatusMedia `json:"media" gorm:"foreignkey:StatusID;constraint:OnDelete:CASCADE;"`
 }
 
