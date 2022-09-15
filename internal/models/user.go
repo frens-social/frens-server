@@ -2,6 +2,13 @@ package models
 
 import "time"
 
+type UserType string
+
+const (
+	UserTypePerson UserType = "person"
+	UserTypeBot    UserType = "bot"
+)
+
 type User struct {
 	ID        uint64    `gorm:"primary_key" json:"id"`
 	CreatedAt time.Time `gorm:"not null" json:"-"`
@@ -13,4 +20,11 @@ type User struct {
 	Password    string `json:"-"`
 	AvatarURL   string `json:"avatar_url"`
 	BannerURL   string `json:"banner_url"`
+
+	//ActivityPub
+	Inbox     string `json:"inbox"`
+	Outbox    string `json:"outbox"`
+	Following string `json:"following"`
+	Followers string `json:"followers"`
+	Liked     string `json:"liked"`
 }

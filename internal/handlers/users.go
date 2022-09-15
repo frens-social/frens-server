@@ -83,3 +83,23 @@ func GetUser(c *fiber.Ctx) error {
 	// Return User
 	return c.JSON(User)
 }
+
+func GetUserInbox(c *fiber.Ctx) error {
+	return c.SendStatus(fiber.StatusNotImplemented)
+}
+
+func GetUserOutbox(c *fiber.Ctx) error {
+	return c.SendStatus(fiber.StatusNotImplemented)
+}
+
+func GetUserFollowers(c *fiber.Ctx) error {
+	return c.SendStatus(fiber.StatusNotImplemented)
+}
+
+func GetUserFollowing(c *fiber.Ctx) error {
+	return c.SendStatus(fiber.StatusNotImplemented)
+}
+
+func GetUserLiked(c *fiber.Ctx) error {
+	return c.SendStatus(fiber.StatusNotImplemented)
+}
