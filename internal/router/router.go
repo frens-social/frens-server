@@ -47,6 +47,9 @@ func addUnauthenticatedRoutes() {
 
 	// Media
 	v1.Get("/media/:id", handlers.GetMedia)
+
+	// Webfinger
+	app.Get("/.well-known/webfinger", handlers.GetWebfinger)
 }
 
 func addAuthenticatedRoutes() {
@@ -60,10 +63,6 @@ func addAuthenticatedRoutes() {
 	v1.Get("/users", handlers.GetAllUsers)
 	v1.Post("/users", handlers.CreateUser)
 	v1.Get("/users/:id", handlers.GetUser)
-	//v1.Get("/users/:id/statuses", handlers.GetUserStatuses)
-	//v1.Get("/users/:id/followers", handlers.GetUserFollowers)
-	//v1.Post("/users/:id/followers", handlers.FollowUser)
-	//v1.Get("/users/:id/following", handlers.GetUserFollowing)
 
 	// Reactions
 	v1.Get("/statuses/:id/reactions", handlers.GetStatusReactions)
